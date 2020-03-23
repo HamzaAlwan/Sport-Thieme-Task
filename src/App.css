@@ -2,3 +2,40 @@ body {
   padding: 50px 20px;
   text-align: center;
 }
+
+.form {
+  margin-bottom: 50px !important;
+}
+
+.text-field {
+  margin: 10px !important;
+  margin-bottom: 50px !important;
+}
+
+.token_expansion {
+  margin-bottom: 40px !important;
+}
+
+.token-field {
+  width: 100%;
+}
+
+.tabs {
+  margin-top: 40px;
+}
+
+.card {
+  text-align: left;
+  margin: 10px 0;
+  padding: 15px;
+  transition: 100ms linear !important;
+}
+
+.home .card:hover {
+  transform: scale(0.9);
+}
+
+.error {
+  color: red;
+  padding: 10px;
+}

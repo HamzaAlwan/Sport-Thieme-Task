@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <Route exact path="/" component={Repository} />
-      <Route path="/issue/:id" component={SingleIssue} />
+      <Route path="/issue" component={SingleIssue} />
     </Router>
   );
 }

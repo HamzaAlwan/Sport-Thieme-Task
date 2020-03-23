@@ -1,30 +1,82 @@
-import React, { useState, useEffect } from "react";
-import "./single_issue.css";
+import React, { useState } from "react";
 
-import TextField from "@material-ui/core/TextField";
+import {
+  Container,
+  TextField,
+  Typography,
+  Card,
+  CardContent
+} from "@material-ui/core";
+import CustomCard from "./custom_card";
 
-const SingleIssue = () => {
+const SingleIssue = props => {
+  const { issue } = props.location.state;
+
   // State
-  const [search_field, setSearchField] = useState("");
-  const [issue, setIssue] = useState({});
+  const [filteredComments, filterComments] = useState(issue.comments.nodes);
 
-  useEffect(() => {
-    // Update the document title using the browser API
-    // document.title = `You clicked ${count} times`;
-  });
+  const updateComments = value => {
+    if (value.length === 0) filterComments(issue.comments.nodes);
+    else {
+      const comments = issue.comments.nodes.slice();
+      filterComments(
+        comments.filter(
+          comment =>
+            comment.bodyText.toLowerCase().indexOf(value.toLowerCase()) > -1
+        )
+      );
+    }
+  };
 
   return (
-    <div>
+    <Container maxWidth="sm">
+      <h2>Issue ID: "{issue.id}"</h2>
       <TextField
-        id="filled-basic"
-        label="Filled"
+        className="text-field"
+        label="Filter Comments"
         variant="filled"
-        value={search_field}
         onChange={e => {
-          setSearchField(e.target.value);
+          updateComments(e.target.value);
         }}
       />
-    </div>
+      <br />
+      <CustomCard data={issue} />
+
+      <br />
+
+      <Container>
+        <Typography>Comments</Typography>
+        {filteredComments.map((comment, i) => (
+          <Card className="card" key={comment.id}>
+            <CardContent>
+              <Typography variant="body1" component="p">
+                Author:{" "}
+                <a
+                  href={comment.author.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {comment.author.login}
+                </a>
+              </Typography>
+              <Typography variant="body2" component="p">
+                Comment Body: {comment.bodyText}
+              </Typography>
+              <Typography variant="body2" component="p">
+                Created At: {new Date(comment.createdAt).toLocaleString()}
+              </Typography>
+
+              <Typography variant="body2" component="p">
+                Link:{" "}
+                <a href={comment.url} target="_blank" rel="noopener noreferrer">
+                  {comment.url}
+                </a>
+              </Typography>
+            </CardContent>
+          </Card>
+        ))}
+      </Container>
+    </Container>
   );
 };
 export default SingleIssue;
